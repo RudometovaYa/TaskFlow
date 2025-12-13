@@ -1,4 +1,4 @@
-import css from "./NoteList.module.css";
+import css from "./TaskList.module.css";
 import type { Task } from "../../types/task";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTask } from "../../services/taskService";

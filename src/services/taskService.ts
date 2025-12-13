@@ -6,7 +6,7 @@ const API_TOKEN = import.meta.env.VITE_TASKFLOW_TOKEN;
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
 interface FetchTasksProps {
-  tasks: Task[];
+  notes: Task[];
   page: number;
   perPage: number;
   totalPages: number;
@@ -31,7 +31,12 @@ export const fetchTasks = async (
     headers: { Authorization: `Bearer ${API_TOKEN}` },
   });
 
-  return response.data;
+  return {
+    notes: response.data.notes,
+    page: response.data.page,
+    perPage: response.data.perPage,
+    totalPages: response.data.totalPages,
+  };
 };
 
 interface CreateTaskProps {

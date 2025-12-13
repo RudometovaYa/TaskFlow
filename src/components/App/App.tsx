@@ -51,9 +51,9 @@ export default function App() {
         {isLoading && <Loader />}
         {isError && <ErrorMessage />}
 
-        {data && data.tasks.length > 0 && <TaskList tasks={data.tasks} />}
+        {data && data.notes.length > 0 && <TaskList tasks={data.notes} />}
 
-        {data && data.tasks.length === 0 && <p>No tasks found.</p>}
+        {data && data.notes.length === 0 && <p>No tasks found.</p>}
 
         {isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
