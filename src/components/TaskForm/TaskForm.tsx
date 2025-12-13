@@ -4,50 +4,50 @@ import type { FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createNote } from "../../services/noteService";
-import type { NewNoteData } from "../../types/note";
+import { createTask } from "../../services/taskService";
+import type { NewTaskData } from "../../types/task";
 
-const initialValues: NewNoteData = {
+const initialValues: NewTaskData = {
   title: "",
   content: "",
   tag: "Todo",
 };
 
-interface NoteFormProps {
+interface TaskFormProps {
   onCancel: () => void;
 }
 
-const NoteSchema = Yup.object().shape({
+const TaskSchema = Yup.object().shape({
   title: Yup.string()
     .min(3, "Title is to short")
     .max(50, "Title is to longh")
-    .required("This field is requered"),
-  content: Yup.string().max(500, "Content should not be more then 500 simbols"),
+    .required("This field is required"),
+  content: Yup.string().max(500, "Content should not be more then 500 symbols"),
   tag: Yup.string()
     .oneOf(
       ["Todo", "Work", "Personal", "Meeting", "Shopping"],
-      "Incorect value"
+      "Incorrect value"
     )
-    .required("Tag is requered"),
+    .required("Tag is required"),
 });
 
-export default function NoteForm({ onCancel }: NoteFormProps) {
+export default function TaskForm({ onCancel }: TaskFormProps) {
   const fieldId = useId();
   const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (noteData: NewNoteData) => createNote(noteData),
+    mutationFn: (taskData: NewTaskData) => createTask(taskData),
     onSuccess() {
       queryClient.invalidateQueries({
-        queryKey: ["notes"],
+        queryKey: ["tasks"],
       });
       onCancel();
     },
   });
 
   const handleSubmit = (
-    values: NewNoteData,
-    formikHelpers: FormikHelpers<NewNoteData>
+    values: NewTaskData,
+    formikHelpers: FormikHelpers<NewTaskData>
   ) => {
     mutate(values);
     formikHelpers.resetForm();
@@ -57,7 +57,7 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
     <Formik
       initialValues={initialValues}
       onSubmit={handleSubmit}
-      validationSchema={NoteSchema}
+      validationSchema={TaskSchema}
     >
       {() => (
         <Form className={css.form}>
@@ -118,7 +118,7 @@ export default function NoteForm({ onCancel }: NoteFormProps) {
               className={css.submitButton}
               disabled={isPending}
             >
-              {isPending ? "Creating..." : "Create note"}
+              {isPending ? "Creating..." : "Create task"}
             </button>
           </div>
         </Form>

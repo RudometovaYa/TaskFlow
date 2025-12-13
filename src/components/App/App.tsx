@@ -2,13 +2,13 @@ import css from "./App.module.css";
 import { Toaster } from "react-hot-toast";
 import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import NoteList from "../NoteList/NoteList";
-import { fetchNotes } from "../../services/noteService";
+import TaskList from "../TaskList/TaskList";
+import { fetchTasks } from "../../services/taskService";
 import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/Modal";
-import NoteForm from "../NoteForm/NoteForm";
+import TaskForm from "../TaskForm/TaskForm";
 import SearchBox from "../SearchBox/SearchBox";
 import { useDebounce } from "use-debounce";
 
@@ -21,8 +21,8 @@ export default function App() {
   const safeQuery = debouncedQuery.trim();
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["notes", safeQuery, currentPage],
-    queryFn: () => fetchNotes(safeQuery, currentPage),
+    queryKey: ["tasks", safeQuery, currentPage],
+    queryFn: () => fetchTasks(safeQuery, currentPage),
     placeholderData: keepPreviousData,
   });
 
@@ -37,7 +37,7 @@ export default function App() {
       <div className={css.app}>
         <header className={css.toolbar}>
           <button className={css.button} onClick={() => setIsModalOpen(true)}>
-            Create note +
+            Create task +
           </button>
           {pageCount > 1 && (
             <Pagination
@@ -51,13 +51,13 @@ export default function App() {
         {isLoading && <Loader />}
         {isError && <ErrorMessage />}
 
-        {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
+        {data && data.tasks.length > 0 && <TaskList tasks={data.tasks} />}
 
-        {data && data.notes.length === 0 && <p>Нотатки не знайдено.</p>}
+        {data && data.tasks.length === 0 && <p>No tasks found.</p>}
 
         {isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
-            <NoteForm onCancel={() => setIsModalOpen(false)} />
+            <TaskForm onCancel={() => setIsModalOpen(false)} />
           </Modal>
         )}
       </div>

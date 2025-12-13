@@ -1,33 +1,32 @@
 import axios from "axios";
-import type { Note } from "../types/note";
+import type { Task } from "../types/task";
 
-const API_TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
+const API_TOKEN = import.meta.env.VITE_TASKFLOW_TOKEN;
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
-interface FetchNotesProps {
-  notes: Note[];
+interface FetchTasksProps {
+  tasks: Task[];
   page: number;
   perPage: number;
   totalPages: number;
 }
 
-export const fetchNotes = async (
+export const fetchTasks = async (
   search: string,
   page: number = 1,
   perPage: number = 12
-): Promise<FetchNotesProps> => {
+): Promise<FetchTasksProps> => {
   const params: Record<string, string | number> = {
     page: page.toString(),
     perPage: perPage.toString(),
   };
 
-  // Додаємо search тільки якщо він не порожній
   if (search.trim() !== "") {
     params.search = search;
   }
 
-  const response = await axios.get<FetchNotesProps>(`/notes`, {
+  const response = await axios.get<FetchTasksProps>(`/notes`, {
     params,
     headers: { Authorization: `Bearer ${API_TOKEN}` },
   });
@@ -35,21 +34,21 @@ export const fetchNotes = async (
   return response.data;
 };
 
-interface CreateNoteProps {
+interface CreateTaskProps {
   title: string;
   content: string;
   tag: string;
 }
 
-export const createNote = async (noteData: CreateNoteProps): Promise<Note> => {
-  const response = await axios.post<Note>(`/notes`, noteData, {
+export const createTask = async (taskData: CreateTaskProps): Promise<Task> => {
+  const response = await axios.post<Task>(`/notes`, taskData, {
     headers: { Authorization: `Bearer ${API_TOKEN}` },
   });
   return response.data;
 };
 
-export const deleteNote = async (id: number): Promise<Note> => {
-  const response = await axios.delete<Note>(`/notes/${id}`, {
+export const deleteTask = async (id: number): Promise<Task> => {
+  const response = await axios.delete<Task>(`/notes/${id}`, {
     headers: { Authorization: `Bearer ${API_TOKEN}` },
   });
   return response.data;
