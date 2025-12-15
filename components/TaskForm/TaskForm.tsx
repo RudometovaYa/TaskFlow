@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createTask } from "../../services/taskService";
-import type { NewTaskData } from "../../types/task";
+import type { NewTaskData } from "../../../types/task";
 
 const initialValues: NewTaskData = {
   title: "",

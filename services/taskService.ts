@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { Task } from "../types/task";
+import type { Task } from "../../types/task";
 
 const API_TOKEN = import.meta.env.VITE_TASKFLOW_TOKEN;
 
