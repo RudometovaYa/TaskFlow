@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom"; // замість useNavigate
+import { Link } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
 import css from "../styles/page.module.css";

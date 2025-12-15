@@ -1,5 +1,4 @@
-import React from "react";
-import { Link } from "react-router-dom"; // замість next/link
+import { Link } from "react-router-dom";
 import css from "./Header.module.css";
 
 export default function Header() {
