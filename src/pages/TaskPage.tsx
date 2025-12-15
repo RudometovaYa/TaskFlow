@@ -1,23 +1,27 @@
-import css from "./App.module.css";
+import React, { useState } from "react";
 import { Toaster } from "react-hot-toast";
-import { useState } from "react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import TaskList from "../TaskList/TaskList";
-import { fetchTasks } from "../../services/taskService";
-import Loader from "../Loader/Loader";
-import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import Pagination from "../Pagination/Pagination";
-import Modal from "../Modal/Modal";
-import TaskForm from "../TaskForm/TaskForm";
-import SearchBox from "../SearchBox/SearchBox";
 import { useDebounce } from "use-debounce";
 
-export default function App() {
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+
+import TaskList from "../components/TaskList/TaskList";
+import { fetchTasks } from "../services/taskService";
+import Loader from "../components/Loader/Loader";
+import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
+import Pagination from "../components/Pagination/Pagination";
+import Modal from "../components/Modal/Modal";
+import TaskForm from "../components/TaskForm/TaskForm";
+
+import css from "../styles/App.module.css"; // Перевір, що файл існує
+
+const TaskPage: React.FC = () => {
   const [query, setQuery] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const [debouncedQuery] = useDebounce<string>(query, 500);
+  const [debouncedQuery] = useDebounce(query, 500);
   const safeQuery = debouncedQuery.trim();
 
   const { data, isLoading, isError } = useQuery({
@@ -32,13 +36,18 @@ export default function App() {
   };
 
   const pageCount = data?.totalPages ?? 0;
+
   return (
-    <>
-      <div className={css.app}>
+    <div
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
+      <Header />
+      <main className={css.app} style={{ flex: 1, padding: "32px" }}>
         <header className={css.toolbar}>
           <button className={css.button} onClick={() => setIsModalOpen(true)}>
             Create task +
           </button>
+
           {pageCount > 1 && (
             <Pagination
               pageCount={pageCount}
@@ -46,8 +55,17 @@ export default function App() {
               onPageChange={(page) => setCurrentPage(page + 1)}
             />
           )}
-          <SearchBox onSearch={handleSearch} />
+
+          <div className={css.searchBox}>
+            <input
+              type="text"
+              placeholder="Search tasks..."
+              value={query}
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
         </header>
+
         {isLoading && <Loader />}
         {isError && <ErrorMessage />}
 
@@ -60,8 +78,11 @@ export default function App() {
             <TaskForm onCancel={() => setIsModalOpen(false)} />
           </Modal>
         )}
-      </div>
+      </main>
+      <Footer />
       <Toaster position="top-right" reverseOrder={false} />
-    </>
+    </div>
   );
-}
+};
+
+export default TaskPage;

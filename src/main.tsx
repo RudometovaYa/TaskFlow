@@ -4,7 +4,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 /* import { StrictMode } from "react";
 import { createRoot } from "react-dom/client"; */
 import "./index.css";
-import App from "../components/App/App";
+import App from "./App";
 // Нормалізація стилів
 import "modern-normalize";
 // Глобальні стилі (додатково)

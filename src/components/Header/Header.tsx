@@ -1,21 +1,20 @@
-"use client";
-
+import React from "react";
+import { Link } from "react-router-dom"; // замість next/link
 import css from "./Header.module.css";
-import Link from "next/link";
 
 export default function Header() {
   return (
     <header className={css.header}>
-      <Link href="/" aria-label="Home">
-        NoteHub
+      <Link to="/" aria-label="Home" className={css.logo}>
+        TaskFlow
       </Link>
       <nav aria-label="Main Navigation">
         <ul className={css.navigation}>
           <li>
-            <Link href="/">Home</Link>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <Link href="/notes">Tasks</Link>
+            <Link to="/task">Tasks</Link>
           </li>
         </ul>
       </nav>
