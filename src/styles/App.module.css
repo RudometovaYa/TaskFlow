@@ -11,8 +11,6 @@ app {
   justify-content: space-between;
   align-items: center;
   padding: 16px 0;
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
 }
 
 .button {
