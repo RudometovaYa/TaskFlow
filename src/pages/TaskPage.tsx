@@ -14,7 +14,7 @@ import Pagination from "../components/Pagination/Pagination";
 import Modal from "../components/Modal/Modal";
 import TaskForm from "../components/TaskForm/TaskForm";
 
-import css from "../styles/App.module.css"; // Перевір, що файл існує
+import css from "../styles/App.module.css";
 
 const TaskPage: React.FC = () => {
   const [query, setQuery] = useState<string>("");
@@ -48,14 +48,6 @@ const TaskPage: React.FC = () => {
             Create task +
           </button>
 
-          {pageCount > 1 && (
-            <Pagination
-              pageCount={pageCount}
-              currentPage={currentPage - 1}
-              onPageChange={(page) => setCurrentPage(page + 1)}
-            />
-          )}
-
           <div className={css.searchBox}>
             <input
               type="text"
@@ -72,6 +64,14 @@ const TaskPage: React.FC = () => {
         {data && data.notes.length > 0 && <TaskList tasks={data.notes} />}
 
         {data && data.notes.length === 0 && <p>No tasks found.</p>}
+
+        {pageCount > 1 && (
+          <Pagination
+            pageCount={pageCount}
+            currentPage={currentPage - 1}
+            onPageChange={(page) => setCurrentPage(page + 1)}
+          />
+        )}
 
         {isModalOpen && (
           <Modal onClose={() => setIsModalOpen(false)}>
